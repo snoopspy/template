@@ -6,7 +6,7 @@ all:
 update:
 	git pull
 
-debug: ibfoobar_d libfoobar_gui_d
+debug: libfoobar_d libfoobar_gui_d
 
 release: libfoobar libfoobar_gui
 
