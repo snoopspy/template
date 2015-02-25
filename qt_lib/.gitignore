@@ -1,0 +1,7 @@
+bin/
+build-*/
+*.a
+*.o
+*.pro.user
+Makefile*
+
