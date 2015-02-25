@@ -49,4 +49,3 @@ clean:
 	find -type f -name '*.o' -delete
 	find -type f -name '*.pro.user' -delete
 	find -type f -name 'Makefile*' -delete
-
