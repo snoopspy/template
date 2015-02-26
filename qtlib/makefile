@@ -6,21 +6,51 @@ all:
 update:
 	git pull
 
-debug: libfoobar_d libfoobar_gui_d
+debug: libfoobar_d libfoobar_gui_d libfoobar_test_d
 
-release: libfoobar libfoobar_gui
+release: libfoobar libfoobar_gui libfoobar_test
 
 libfoobar_d:
-	cd lib && qmake libfoobar.pro CONFIG+=debug     && make && make clean && cd ..
+	cd lib && \
+	qmake libfoobar.pro CONFIG+=debug && \
+	make && \
+	make clean && \
+	cd ..
 
 libfoobar_gui_d:
-	cd lib && qmake libfoobar_gui.pro CONFIG+=debug && make && make clean && cd ..
+	cd lib && \
+	qmake libfoobar_gui.pro CONFIG+=debug && \
+	make && \
+	make clean && \
+	cd ..
+
+libfoobar_test_d:
+	cd lib && \
+	qmake libfoobar_test.pro CONFIG+=debug && \
+	make && \
+	make clean && \
+	cd ..
 
 libfoobar:
-	cd lib && qmake libfoobar.pro                   && make && make clean && cd ..
+	cd lib && \
+	qmake libfoobar.pro && \
+	make && \
+	make clean && \
+	cd ..
 
 libfoobar_gui:
-	cd lib && qmake libfoobar_gui.pro               && make && make clean && cd ..
+	cd lib && \
+	qmake libfoobar_gui.pro && \
+	make && \
+	make clean && \
+	cd ..
+
+libfoobar_test:
+	cd lib && \
+	qmake libfoobar_test.pro && \
+	make && \
+	make clean && \
+	cd ..
 
 app_:
 	cd app && qmake && make && make clean && cd ..
