@@ -12,7 +12,6 @@ android-g++:                 FOOBAR_NAME = $${FOOBAR_NAME}_android
 contains(QT, gui)            FOOBAR_NAME = $${FOOBAR_NAME}_gui
 CONFIG(GTEST)                FOOBAR_NAME = $${FOOBAR_NAME}_test
 CONFIG(debug, debug|release) FOOBAR_NAME = $${FOOBAR_NAME}_d
-message($${FOOBAR_NAME})
 
 #------------------------------------------------------------------------------
 # foobar
