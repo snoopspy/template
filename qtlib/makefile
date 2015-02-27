@@ -1,4 +1,4 @@
-define makelib # $(1)filename,$(2)config
+define makelib # $(1)filename, $(2)config
 	cd lib && \
 	qmake $(1) CONFIG+=$(2) && \
 	make && \
