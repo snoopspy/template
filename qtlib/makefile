@@ -1,3 +1,11 @@
+define makelib # $(1)filename,$(2)config
+	cd lib && \
+	qmake $(1) CONFIG+=$(2) && \
+	make && \
+	make clean && \
+	cd ..
+endef
+
 all:
 	make debug
 	make release
@@ -11,46 +19,22 @@ debug: libfoobar_d libfoobar_gui_d libfoobar_test_d
 release: libfoobar libfoobar_gui libfoobar_test
 
 libfoobar_d:
-	cd lib && \
-	qmake libfoobar.pro CONFIG+=debug && \
-	make && \
-	make clean && \
-	cd ..
+	$(call makelib,libfoobar.pro,debug)
 
 libfoobar_gui_d:
-	cd lib && \
-	qmake libfoobar_gui.pro CONFIG+=debug && \
-	make && \
-	make clean && \
-	cd ..
+	$(call makelib,libfoobar_gui.pro,debug)
 
 libfoobar_test_d:
-	cd lib && \
-	qmake libfoobar_test.pro CONFIG+=debug && \
-	make && \
-	make clean && \
-	cd ..
+	$(call makelib,libfoobar_test.pro,debug)
 
 libfoobar:
-	cd lib && \
-	qmake libfoobar.pro && \
-	make && \
-	make clean && \
-	cd ..
+	$(call makelib,libfoobar.pro,release)
 
 libfoobar_gui:
-	cd lib && \
-	qmake libfoobar_gui.pro && \
-	make && \
-	make clean && \
-	cd ..
+	$(call makelib,libfoobar_gui.pro,release)
 
 libfoobar_test:
-	cd lib && \
-	qmake libfoobar_test.pro && \
-	make && \
-	make clean && \
-	cd ..
+	$(call makelib,libfoobar_test.pro,release)
 
 app_:
 	cd app && qmake && make && make clean && cd ..
