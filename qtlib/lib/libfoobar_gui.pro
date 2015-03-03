@@ -1,5 +1,2 @@
-QT += core
-QT += gui
-
-CONFIG += FOOBAR_BUILD
+QT += gui widgets
 include(../foobar.pro)
