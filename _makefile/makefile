@@ -1,4 +1,4 @@
-SOURCES = main.cpp
+SOURCES = $(wildcard *.cpp)
 OBJECTS = $(SOURCES:.cpp=.o)
 EXECUTABLE = $(shell basename $(PWD))
 LDFLAGS += -lpthread
