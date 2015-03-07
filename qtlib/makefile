@@ -14,9 +14,9 @@ all:
 update:
 	git pull
 
-debug: libfoobar_d libfoobar_gui_d libfoobar_test_d
+debug: libfoobar_d libfoobar_gui_d libfoobar_test_d libfoobar_gui_test_d
 
-release: libfoobar libfoobar_gui libfoobar_test
+release: libfoobar libfoobar_gui libfoobar_test libfoobar_gui_test
 
 libfoobar_d:
 	$(call makelib,libfoobar.pro,debug)
@@ -27,6 +27,9 @@ libfoobar_gui_d:
 libfoobar_test_d:
 	$(call makelib,libfoobar_test.pro,debug)
 
+libfoobar_gui_test_d:
+	$(call makelib,libfoobar_gui_test.pro,debug)
+
 libfoobar:
 	$(call makelib,libfoobar.pro,release)
 
@@ -35,6 +38,9 @@ libfoobar_gui:
 
 libfoobar_test:
 	$(call makelib,libfoobar_test.pro,release)
+
+libfoobar_gui_test:
+	$(call makelib,libfoobar_gui_test.pro,release)
 
 app_:
 	cd app && qmake && make && make clean && cd ..
