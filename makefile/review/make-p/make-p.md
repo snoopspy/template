@@ -1,9 +1,9 @@
-|                  | Command | CFLAGS | CXXFLAGS | CPPFLAGS | LDFLAGS |
-|------------------|---------|--------|----------|----------|---------|
-| COMPILE.c        |  $(CC)  |    O   |          |     O    |         |
-| COMPILE.cc(cpp)  |  $(CXX) |        |     O    |     O    |         |
-| LINK.c           |  $(CC)  |    O   |          |     O    |    O    |
-| LINK.cc LINK.cpp |  $(CXX) |        |     O    |     O    |    O    |
+|                 | Command | CFLAGS | CXXFLAGS | CPPFLAGS | LDFLAGS |
+|-----------------|---------|--------|----------|----------|---------|
+| COMPILE.c       |  $(CC)  |    O   |          |     O    |         |
+| COMPILE.cc(cpp) |  $(CXX) |        |     O    |     O    |         |
+| LINK.c          |  $(CC)  |    O   |          |     O    |    O    |
+| LINK.cc(cpp)    |  $(CXX) |        |     O    |     O    |    O    |
 
 ```
 OUTPUT_OPTION = -o $@
