@@ -1,7 +1,7 @@
 QT += core
 QT -= gui
 
-include(../../../foobar.pro)
+include(../../../lib/libfoobar.pri)
 
 TARGET = simple_build
 CONFIG += console

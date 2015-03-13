@@ -1,6 +1,6 @@
 QT -= gui
 
-include(../foobar.pro)
+include(libfoobar.pri)
 
 TARGET = $${FOOBAR_NAME}
 TEMPLATE = lib

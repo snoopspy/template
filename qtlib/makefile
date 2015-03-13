@@ -6,10 +6,7 @@ define makelib # $(1)filename, $(2)config
 	cd ..
 endef
 
-all:
-	make debug
-	make release
-	make app_
+all: debug release app_
 
 update:
 	git pull

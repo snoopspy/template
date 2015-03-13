@@ -1,7 +1,7 @@
 QT += gui widgets
 
 include(../../../../google/gtest/gtest.pri)
-include(../foobar.pro)
+include(libfoobar.pri)
 
 TARGET = $${FOOBAR_NAME}
 TEMPLATE = lib
