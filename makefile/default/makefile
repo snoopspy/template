@@ -1,13 +1,12 @@
-SOURCES = $(wildcard *.cpp)
-OBJECTS = $(SOURCES:.cpp=.o)
-EXECUTABLE = $(shell basename $(PWD))
-LDFLAGS += -lpthread
+SRCS = $(wildcard *.cpp)
+OBJS = $(addsuffix .o,$(basename $(SRCS)))
+EXEC = $(shell basename $(PWD))
  
-all: $(SOURCES) $(EXECUTABLE)
+all: $(EXEC)
  
-$(EXECUTABLE): $(OBJECTS) 
-	$(CXX) -o $@ $(OBJECTS) $(LDFLAGS)
+$(EXEC): $(OBJS)
+	$(LINK.cc) -o $@ $(OBJS) $(LOADLIBES) $(LDLIBS)
  
 clean:
 	rm -rf *.o
-	rm -rf $(EXECUTABLE)
+	rm -rf $(EXEC)
