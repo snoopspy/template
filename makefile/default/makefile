@@ -2,6 +2,8 @@ SOURCES = $(wildcard *.cpp)
 OBJECTS = $(addsuffix .o,$(basename $(SOURCES)))
 TARGET  = $(shell basename $(PWD))
  
+first: all
+
 all: $(TARGET)
  
 $(TARGET): $(OBJECTS)
