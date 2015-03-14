@@ -1,6 +1,6 @@
-SRCS = $(wildcard *.c) $(wildcard *.cc) $(wildcard *.cpp) $(wildcard *.cxx)
-OBJS = $(addsuffix .o,$(basename $(SRCS)))
-EXEC = $(shell basename $(PWD))
+SOURCES = $(wildcard *.c) $(wildcard *.cc) $(wildcard *.cpp) $(wildcard *.cxx)
+OBJECTS = $(addsuffix .o,$(basename $(SOURCES)))
+TARGET = $(shell basename $(PWD))
 
 CFLAGS    = -DCFLAGS
 CXXFLAGS  = -DCXXFLAGS
@@ -11,24 +11,26 @@ LDFLAGS   = -DLDFLAGS
 LOADLIBES = -DLOADLIBES
 LDLIBS    = -DLDLIBS
 
+first: all
+
 all: release
 
 debug: CPPFLAGS += -DDEBUG
-debug: $(EXEC)
+debug: $(TARGET)
 
 release: CPPFLAGS += -DRELEASE
-release: $(EXEC)
+release: $(TARGET)
 
 %.o: %.cxx
 	$(COMPILE.cc) $(OUTPUT_OPTION) $<
 
-$(EXEC): $(OBJS)
-	$(LINK.cc) -o $@ $(OBJS) $(LOADLIBES) $(LDLIBS)
+$(TARGET): $(OBJECTS)
+	$(LINK.cc) -o $@ $(OBJECTS) $(LOADLIBES) $(LDLIBS)
 
 list:
-	@echo "SRCS="$(SRCS)
-	@echo "OBJS="$(OBJS)
+	@echo "SOURCES="$(SOURCES)
+	@echo "OBJECTS="$(OBJECTS)
 
 clean:
 	rm -rf *.o
-	rm -rf $(EXEC)
+	rm -rf $(TARGET)

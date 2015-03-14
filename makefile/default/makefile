@@ -1,12 +1,12 @@
-SRCS = $(wildcard *.cpp)
-OBJS = $(addsuffix .o,$(basename $(SRCS)))
-EXEC = $(shell basename $(PWD))
+SOURCES = $(wildcard *.cpp)
+OBJECTS = $(addsuffix .o,$(basename $(SOURCES)))
+TARGET  = $(shell basename $(PWD))
  
-all: $(EXEC)
+all: $(TARGET)
  
-$(EXEC): $(OBJS)
-	$(LINK.cc) -o $@ $(OBJS) $(LOADLIBES) $(LDLIBS)
+$(TARGET): $(OBJECTS)
+	$(LINK.cc) -o $@ $(OBJECTS) $(LOADLIBES) $(LDLIBS)
  
 clean:
 	rm -rf *.o
-	rm -rf $(EXEC)
+	rm -rf $(TARGET)
