@@ -1,4 +1,4 @@
-SOURCES += $(wildcard *.c) $(wildcard *.cc) $(wildcard *.cpp) $(wildcard *.cxx)
+SOURCES += $(wildcard *.c)   $(wildcard *.cc)   $(wildcard *.cpp)   $(wildcard *.cxx)
 SOURCES += $(wildcard */*.c) $(wildcard */*.cc) $(wildcard */*.cpp) $(wildcard */*.cxx)
 OBJECTS = $(addsuffix .o,$(basename $(SOURCES)))
 TARGET = $(shell basename $(PWD))
