@@ -8,20 +8,29 @@
 ```
 OUTPUT_OPTION = -o $@
 
-COMPILE.c   = $(CC)  $(CFLAGS)   $(CPPFLAGS) $(TARGET_ARCH) -c
-COMPILE.cc  = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
-COMPILE.cpp = $(COMPILE.cc)
+COMPILE.c     = $(CC)      $(CFLAGS)               $(CPPFLAGS)            $(TARGET_ARCH) -c
+COMPILE.cc    = $(CXX)                 $(CXXFLAGS) $(CPPFLAGS)            $(TARGET_ARCH) -c
+COMPILE.cpp   = $(COMPILE.cc)
+
+LINK.c        = $(CC)      $(CFLAGS)   $(CPPFLAGS)             $(LDFLAGS) $(TARGET_ARCH)
+LINK.cc       = $(CXX)                 $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+LINK.cpp      = $(LINK.cc)
 
 .c.o:
-	$(COMPILE.c) $(OUTPUT_OPTION) $<
+	$(COMPILE.c)   $(OUTPUT_OPTION) $<
 
 .cc.o:
-	$(COMPILE.cc) $(OUTPUT_OPTION) $<
+	$(COMPILE.cc)  $(OUTPUT_OPTION) $<
 
 .cpp.o:
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 
-LINK.c =  $(CC)  $(CFLAGS)   $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
-LINK.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
-LINK.cpp = $(LINK.cc)
+%: %.c
+	$(LINK.c)   $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+%: %.cc
+	$(LINK.cc)  $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+%: %.cpp
+	$(LINK.cpp) $^ $(LOADLIBES) $(LDLIBS) -o $@
 ```
