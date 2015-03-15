@@ -6,6 +6,8 @@ define makelib # $(1)filename, $(2)config
 	cd ..
 endef
 
+first: all
+
 all: debug release app_
 
 update:
