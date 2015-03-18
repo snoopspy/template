@@ -19,8 +19,8 @@ CONFIG(debug, debug|release) FOOBAR_NAME = $${FOOBAR_NAME}_d
 # foobar
 #------------------------------------------------------------------------------
 FOOBAR_PATH = $$PWD
-INCLUDEPATH += $${FOOBAR_PATH}/src
+INCLUDEPATH += $$FOOBAR_PATH/src
 !CONFIG(FOOBAR_BUILD) {
-	PRE_TARGETDEPS +=  $${FOOBAR_PATH}/lib/lib$${FOOBAR_NAME}.a
-	LIBS           += -L$${FOOBAR_PATH}/lib -l$${FOOBAR_NAME}
+	PRE_TARGETDEPS +=  $$FOOBAR_PATH/lib/lib$${FOOBAR_NAME}.a
+	LIBS           += -L$$FOOBAR_PATH/lib -l$$FOOBAR_NAME
 }
