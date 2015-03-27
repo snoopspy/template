@@ -1,4 +1,4 @@
-.PHONY: all temp clean
+.PHONY: all clean temp
 
 _SRCS = $(wildcard *.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
