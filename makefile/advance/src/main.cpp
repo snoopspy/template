@@ -1,10 +1,10 @@
 #include <iostream>
-#include "baz.h"
+#include "myliba.h"
 
 int main()
 {
   std::cout << "beg main\n";
-  baz(); // gilgil temp
+  myliba(); // gilgil temp
   std::cout << "end main\n";
   return 0;
 }

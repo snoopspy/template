@@ -4,6 +4,14 @@ lib/makefile
 src/makefile
 test/makefile
 src/main.cpp
+lib/myliba/makefile
+lib/myliba/myliba.cpp
+lib/myliba/myliba.h
+lib/myliba/myliba.mk
+lib/myliba/mylibb/makefile
+lib/myliba/mylibb/mylibb.cpp
+lib/myliba/mylibb/mylibb.h
+lib/myliba/mylibb/mylibb.mk
 lib/myliba/mylibb/mylibc/makefile
 lib/myliba/mylibb/mylibc/mylibc.cpp
 lib/myliba/mylibb/mylibc/mylibc.h

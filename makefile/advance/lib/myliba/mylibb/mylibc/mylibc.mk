@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------------------
-# lib/a/b/c/c.mk
+# lib/myliba/mylibb/mylibc/mylibc.mk
 # ------------------------------------------------------------------------------
 
-C_PATH := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-C_PATH := $(subst $(_ABS_PATH),$(_REL_PATH),$(C_PATH))
+MYLIBC_PATH := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+MYLIBC_PATH := $(subst $(_ABS_PATH),$(_REL_PATH),$(MYLIBC_PATH))
 
-CPPFLAGS += -I$(C_PATH)
-LDFLAGS  += -L$(C_PATH)
-#LDLIBS   += -lc
+CPPFLAGS += -I$(MYLIBC_PATH)
+LDFLAGS  += -L$(MYLIBC_PATH)
+LDLIBS   += -lmylibc

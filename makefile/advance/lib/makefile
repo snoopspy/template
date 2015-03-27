@@ -2,18 +2,19 @@
 # lib/makefile
 # ------------------------------------------------------------------------------
 
-_SUBPROJS = foo foo/bar foo/bar/baz
-.PHONY: all debug release build clean temp $(_SUBPROJS)
-
-all: foo foo/bar foo/bar/baz
-	@echo "lib all"
+_SUB_PROJS = myliba myliba/mylibb myliba/mylibb/mylibc
+.PHONY: all debug release build clean temp $(_SUB_PROJS)
 
 all    : release
 debug  : build
 release: build
-build  : $(_SUBPROJS)
-clean  : $(_SUBPROJS)
-temp   : $(_SUBPROJS)
+build  : $(_SUB_PROJS)
+clean  : $(_SUB_PROJS)
+temp   :
+	@echo "MAKECMDGOALS="$(MAKECMDGOALS)
 
-$(_SUBPROJS):
-	cd foo/bar/baz && make $(MAKECMDGOALS) && cd../../..
+$(_SUB_PROJS):
+	cd $@ && make $(MAKECMDGOALS)
+
+myliba: myliba/mylibb
+myliba/mylibb: myliba/mylibb/mylibc

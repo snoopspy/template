@@ -6,17 +6,16 @@
 
 _ABS_PATH := $(shell dirname $(PWD))
 _REL_PATH := ..
-include ../lib/a/b/c/c.mk
+include ../lib/myliba/myliba.mk
 
 _SRCS = $(wildcard *.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
-_EXEC = hello_world
+_EXEC = ../bin/hello_world
 
 #
 # targets
 #
 all: release
-	@echo "src all"
 
 debug: CXXFLAGS := -g -O0 -D_DEBUG $(CXXFLAGS)
 debug: build
@@ -27,8 +26,9 @@ release: build
 build: $(_EXEC)
 
 temp:
-	@echo "C_PATH="$(C_PATH)
-	@echo "C_PATH="$(C_PATH)
+	@echo "_ABS_PATH  ="$(_ABS_PATH)
+	@echo "_REL_PATH  ="$(_REL_PATH)
+	@echo "MYLIBC_PATH="$(MYLIBC_PATH)
 
 clean:
 	rm -f ./.depend

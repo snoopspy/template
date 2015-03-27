@@ -1,8 +1,10 @@
 # ------------------------------------------------------------------------------
-# lib/myliba/mylibb/mylibc/makefile
+# lib/myliba/mylibb/makefile
 # ------------------------------------------------------------------------------
 
 .PHONY: all temp clean
+
+include mylibb/mylibb.mk
 
 _SRCS = $(wildcard *.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
@@ -11,14 +13,12 @@ _LIB  = lib$(shell basename $(PWD)).a
 all: $(_LIB)
 
 temp:
-	@echo "lib/myliba/mylibb/mylibc temp"
+	@echo "lib/myliba/mylibb temp"
 
 clean:
 	rm -f ./.depend
 	rm -rf $(_OBJS)
 	rm -rf $(_LIB)
-
-depend: .depend
 
 .depend: $(_SRCS)
 	@rm -f ./.depend

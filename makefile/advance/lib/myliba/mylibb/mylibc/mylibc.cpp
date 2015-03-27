@@ -3,5 +3,5 @@
 
 void mylibc()
 {
-  std::cout << "mylibc";
+  std::cout << "mylibc\n";
 }
