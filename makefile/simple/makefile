@@ -14,7 +14,7 @@ clean:
 	rm -rf $(_OBJS)
 	rm -rf $(_EXEC)
 
-.depend: $(_SRCS) $(MAKEFILE_LIST)
+.depend: $(_SRCS)
 	rm -f ./.depend
 	$(CXX) $(CPPFLAGS) -MM $(_SRCS) > ./.depend
 
