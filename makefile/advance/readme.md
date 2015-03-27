@@ -7,17 +7,16 @@ LDLIBS
 # specific variables
 _ABS_PATH
 _REL_PATH
-_SOURCES
-_OBJECTS
-_EXECUTABLE
-_LIBRARY
+_SRCS
+_OBJS
+_EXEC
+_LIB
 
 # targets
 all
 debug
 release
 build
-$(_EXECUTABLE)
-temp
-depend
 clean
+depend
+temp

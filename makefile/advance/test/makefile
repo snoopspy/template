@@ -1,5 +1,9 @@
 # ------------------------------------------------------------------------------
-# test/makefile
+# lib/makefile
 # ------------------------------------------------------------------------------
 
-.PHONY: all debug release build temp depend clean
+all:
+	@echo "test all"
+	
+$(MAKECMDGOALS):
+	@echo "test "$(MAKECMDGOALS)
