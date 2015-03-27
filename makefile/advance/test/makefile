@@ -1,14 +1,5 @@
 # ------------------------------------------------------------------------------
-# makefile
+# test/makefile
 # ------------------------------------------------------------------------------
 
 .PHONY: all debug release build temp depend clean
-
-all:
-	make $(TARGET) -C src
-debug
-release
-build
-temp
-depend
-clean
