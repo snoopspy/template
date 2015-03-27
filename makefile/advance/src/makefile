@@ -2,33 +2,25 @@
 # src/makefile
 # ------------------------------------------------------------------------------
 
-.PHONY: all debug release build temp depend clean subdirs
+.PHONY: all debug release build clean temp
 
-#
-# debug and release option
-#
-ifeq ($(MAKECMDGOALS),debug)
-CPPFLAGS += -O0 -D_DEBUG
-else
-CPPFLAGS += -O2 -D_RELEASE
-endif
+_SRCS = $(wildcard *.cpp) $(wildcard *.cc) $(wildcard *.c)
+_OBJS = $(addsuffix .o,$(basename $(_SRCS)))
+_EXEC = $(shell basename $(PWD))
 
-#
-# sources, objects and executable
-#
-_SOURCES    = $(wildcard *.cpp) $(wildcard *.cc) $(wildcard *.c)
-_OBJECTS    = $(addsuffix .o,$(basename $(_SOURCES)))
-_EXECUTABLE = $(shell basename $(PWD))
+CPPFLAGS += -g
 
 #
 # targets
 #
 all: release
 	@echo "src all"
-	
+
+debug: CPPFLAGS += -O0 -D_DEBUG
 debug: build
 	@echo "src debug"
 
+release: CPPFLAGS += -O2 -D_RELEASE -DNDEBUG
 release: build
 	@echo "src release"
 	
@@ -37,15 +29,21 @@ build: $(_TARGET)
 
 clean:
 	@echo "src clean"
-	rm -rf $(_OBJECTS)
+	rm -rf $(_OBJS)
 	rm -rf $(_TARGET)
 
-depend:
-
 temp:
-	@echo "src build"
+	@echo "src temp"
 	@echo "CPPFLAGS="$(CPPFLAGS)
 	@echo "TARGET="$(TARGET)
 
-$(_EXECUTABLE): $(_OBJECTS)
-	$(LINK.cc) -o $@ $(_OBJECTS) $(LOADLIBES) $(LDLIBS)
+.depend: $(_SRCS) $(MAKEFILE_LIST)
+	rm -f ./.depend
+	$(CXX) $(CPPFLAGS) -MM $(_SRCS) > ./.depend
+
+include .depend
+
+$(_OBJS): $(MAKEFILE_LIST)
+
+$(_EXEC): $(_OBJS) $(MAKEFILE_LIST)
+	$(LINK.cc) -o $@ $(_OBJS) $(LOADLIBES) $(LDLIBS)

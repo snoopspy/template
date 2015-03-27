@@ -18,5 +18,4 @@ debug
 release
 build
 clean
-depend
 temp
