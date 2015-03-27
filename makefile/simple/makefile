@@ -1,21 +1,26 @@
-.PHONY: all clean
+.PHONY: all temp clean
 
 _SRCS = $(wildcard *.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
 _EXEC = $(shell basename $(PWD))
 
 all: $(_EXEC)
- 
+
 clean:
 	rm -f ./.depend
 	rm -rf $(_OBJS)
 	rm -rf $(_EXEC)
 
-$(_EXEC): $(_OBJS)
-	$(LINK.cc) -o $@ $(_OBJS) $(LOADLIBES) $(LDLIBS)
+temp:
+	@echo "MAKEFILE_LIST="$(MAKEFILE_LIST)
 
-.depend: $(_SRCS)
+.depend: $(_SRCS) $(MAKEFILE_LIST)
 	rm -f ./.depend
-	$(CXX) $(CPPFLAGS) -MM $^ > ./.depend
+	$(CXX) $(CPPFLAGS) -MM $(_SRCS) > ./.depend
 
 include .depend
+
+$(_OBJS): $(MAKEFILE_LIST)
+
+$(_EXEC): $(_OBJS) $(MAKEFILE_LIST)
+	$(LINK.cc) -o $@ $(_OBJS) $(LOADLIBES) $(LDLIBS)
