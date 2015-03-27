@@ -2,8 +2,8 @@
 # makefile
 # ------------------------------------------------------------------------------
 
-_SUBDIRS = lib src test
-.PHONY: all debug release build clean depend temp $(_SUBDIRS)
+_SUB_PROJS = lib src test
+.PHONY: all debug release build clean temp $(_SUB_PROJS)
 
 #
 # targets
@@ -15,12 +15,12 @@ all:
 	
 debug   : build
 release : build
-build   : deps_check $(_SUBDIRS)
-clean   : $(_SUBDIRS)
-temp    : $(_SUBDIRS)
+build   : deps_check $(_SUB_PROJS)
+clean   : $(_SUB_PROJS)
+temp    : $(_SUB_PROJS)
 
 deps_check:
 	@echo "deps_check"
 
-$(_SUBDIRS):
+$(_SUB_PROJS):
 	@cd $@ && make $(MAKECMDGOALS) && cd ..

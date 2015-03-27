@@ -3,8 +3,8 @@ readme.md
 lib/makefile
 src/makefile
 test/makefile
-lib/a/b/c/makefile
-lib/a/b/c/c.cpp
-lib/a/b/c/c.h
-lib/a/b/c/c.mk
 src/main.cpp
+lib/myliba/mylibb/mylibc/makefile
+lib/myliba/mylibb/mylibc/mylibc.cpp
+lib/myliba/mylibb/mylibc/mylibc.h
+lib/myliba/mylibb/mylibc/mylibc.mk
