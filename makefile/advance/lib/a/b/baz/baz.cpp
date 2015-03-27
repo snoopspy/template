@@ -1,7 +1,7 @@
 #include <iostream>
-#include "c.h"
+#include "baz.h"
 
-void foo_c()
+void baz()
 {
-  std::cout << "foo_c\n";
+  std::cout << "baz\n";
 }

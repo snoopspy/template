@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# lib/a/b/c/makefile
+# lib/foo/bar/baz/makefile
 # ------------------------------------------------------------------------------
 
 .PHONY: all temp clean
@@ -11,7 +11,7 @@ _LIB  = lib$(shell basename $(PWD)).a
 all: $(_LIB)
 
 temp:
-	@echo "lib/a/b/c temp"
+	@echo "lib/foo/bar/baz temp"
 
 clean:
 	rm -f ./.depend
