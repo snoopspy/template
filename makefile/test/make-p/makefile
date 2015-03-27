@@ -33,6 +33,5 @@ list:
 	@echo "OBJECTS="$(OBJECTS)
 
 clean:
-	rm -rf *.o
-	rm -rf */*.o
+	rm -rf $(OBJECTS)
 	rm -rf $(TARGET)

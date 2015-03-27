@@ -16,5 +16,5 @@ $(TARGET): $(OBJECTS)
 	$(LINK.cc) -o $@ $(OBJECTS) $(LOADLIBES) $(LDLIBS)
  
 clean:
-	rm -rf *.o
+	rm -rf $(OBJECTS)
 	rm -rf $(TARGET)

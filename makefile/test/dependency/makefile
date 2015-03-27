@@ -19,5 +19,5 @@ include .depend
 
 clean:
 	rm -rf .depend
-	rm -rf *.o
+	rm -rf $(OBJECTS)
 	rm -rf $(TARGET)
