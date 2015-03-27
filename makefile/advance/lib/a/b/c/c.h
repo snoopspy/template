@@ -1,3 +1,3 @@
 #pragma once
 
-void c();
+void foo_c();

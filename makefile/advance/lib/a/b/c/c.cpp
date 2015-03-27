@@ -1,7 +1,7 @@
 #include <iostream>
 #include "c.h"
 
-void c()
+void foo_c()
 {
-  std::cout << "c\n";
+  std::cout << "foo_c\n";
 }

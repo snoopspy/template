@@ -18,9 +18,9 @@ clean:
 	rm -rf $(_OBJS)
 	rm -rf $(_LIB)
 
-.depend: $(_SRCS) $(MAKEFILE_LIST)
-	rm -f ./.depend
-	$(CXX) $(CPPFLAGS) -MM $(_SRCS) > ./.depend
+.depend: $(_SRCS)
+	@rm -f ./.depend
+	@$(CXX) $(CPPFLAGS) -MM $(_SRCS) > ./.depend
 
 include .depend
 

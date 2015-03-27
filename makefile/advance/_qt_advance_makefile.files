@@ -6,3 +6,5 @@ test/makefile
 lib/a/b/c/makefile
 lib/a/b/c/c.cpp
 lib/a/b/c/c.h
+lib/a/b/c/c.mk
+src/main.cpp

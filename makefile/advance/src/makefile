@@ -4,11 +4,13 @@
 
 .PHONY: all debug release build clean temp
 
-_SRCS = $(wildcard *.cpp) $(wildcard *.cc) $(wildcard *.c)
-_OBJS = $(addsuffix .o,$(basename $(_SRCS)))
-_EXEC = $(shell basename $(PWD))
+_ABS_PATH := $(shell dirname $(PWD))
+_REL_PATH := ..
+include ../lib/a/b/c/c.mk
 
-CPPFLAGS += -g
+_SRCS = $(wildcard *.cpp)
+_OBJS = $(addsuffix .o,$(basename $(_SRCS)))
+_EXEC = hello_world
 
 #
 # targets
@@ -16,30 +18,26 @@ CPPFLAGS += -g
 all: release
 	@echo "src all"
 
-debug: CPPFLAGS += -O0 -D_DEBUG
+debug: CXXFLAGS := -g -O0 -D_DEBUG $(CXXFLAGS)
 debug: build
-	@echo "src debug"
 
-release: CPPFLAGS += -O2 -D_RELEASE -DNDEBUG
+release: CXXFLAGS := -g -O2 -D_RELEASE -DNDEBUG $(CXXFLAGS)
 release: build
-	@echo "src release"
 	
-build: $(_TARGET)
-	@echo "src build"
-
-clean:
-	@echo "src clean"
-	rm -rf $(_OBJS)
-	rm -rf $(_TARGET)
+build: $(_EXEC)
 
 temp:
-	@echo "src temp"
-	@echo "CPPFLAGS="$(CPPFLAGS)
-	@echo "TARGET="$(TARGET)
+	@echo "C_PATH="$(C_PATH)
+	@echo "C_PATH="$(C_PATH)
 
-.depend: $(_SRCS) $(MAKEFILE_LIST)
+clean:
 	rm -f ./.depend
-	$(CXX) $(CPPFLAGS) -MM $(_SRCS) > ./.depend
+	rm -rf $(_OBJS)
+	rm -rf $(_EXEC)
+
+.depend: $(_SRCS)
+	@rm -f ./.depend
+	@$(CXX) $(CPPFLAGS) -MM $(_SRCS) > ./.depend
 
 include .depend
 
