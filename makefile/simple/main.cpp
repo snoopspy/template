@@ -1,6 +1,5 @@
 #include <iostream>
-
-void foo();
+#include "foo.h"
 
 int main()
 {
@@ -8,4 +7,3 @@ int main()
   foo();
   return 0;
 }
-

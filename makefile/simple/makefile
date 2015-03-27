@@ -1,23 +1,21 @@
-SOURCES = $(wildcard *.cpp)
-OBJECTS = $(addsuffix .o,$(basename $(SOURCES)))
-TARGET  = $(shell basename $(PWD))
+.PHONY: all clean
 
-#CPPFLAGS
-#LDLIBS
+_SRCS = $(wildcard *.cpp)
+_OBJS = $(addsuffix .o,$(basename $(_SRCS)))
+_EXEC = $(shell basename $(PWD))
+
+all: $(_EXEC)
  
-first: all
-
-all: $(TARGET)
- 
-$(TARGET): $(OBJECTS)
-	$(LINK.cc) -o $@ $(OBJECTS) $(LOADLIBES) $(LDLIBS)
-
-show:
-	@echo "TARGET="$(TARGET)
-	@echo "OBJECTS="$(OBJECTS)
-
 clean:
-	rm -rf $(OBJECTS)
-	rm -rf $(TARGET)
+	rm -f ./.depend
+	rm -rf $(_OBJS)
+	rm -rf $(_EXEC)
 
-.PHONY: show
+$(_EXEC): $(_OBJS)
+	$(LINK.cc) -o $@ $(_OBJS) $(LOADLIBES) $(LDLIBS)
+
+.depend: $(_SRCS)
+	rm -f ./.depend
+	$(CXX) $(CPPFLAGS) -MM $^ > ./.depend
+
+include .depend
