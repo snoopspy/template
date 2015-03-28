@@ -1,0 +1,7 @@
+lib/myliba
+lib/myliba/mylibb
+lib/myliba/mylibb/mylibc
+.
+test
+lib
+src
