@@ -8,14 +8,14 @@ _SUB_PROJS = lib src test
 #
 # targets
 #
-all:
+all: deps_check
 	@cd lib  && make release && cd ..
 	@cd src  && make release && cd ..
 	@cd test && make debug   && cd ..
 	
 debug   : build
 release : build
-build   : deps_check $(_SUB_PROJS)
+build   : $(_SUB_PROJS)
 clean   : $(_SUB_PROJS)
 temp    : $(_SUB_PROJS)
 
@@ -23,4 +23,4 @@ deps_check:
 	@echo "deps_check"
 
 $(_SUB_PROJS):
-	@cd $@ && make $(MAKECMDGOALS)
+	@cd $@ && make && cd ..
