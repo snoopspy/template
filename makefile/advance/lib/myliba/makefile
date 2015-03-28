@@ -4,6 +4,8 @@
 
 .PHONY: all debug release build clean temp
 
+_ABS_PATH := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+_REL_PATH := .
 include mylibb/mylibb.mk
 
 _SRCS = $(wildcard *.cpp)
@@ -31,7 +33,7 @@ temp:
 depend: .depend
 
 .depend: $(_SRCS)
-	@rm -f ./.depend
-	@$(CXX) $(CPPFLAGS) -MM $(_SRCS) > ./.depend
+	rm -f ./.depend
+	$(CXX) $(CPPFLAGS) -MM $(_SRCS) > ./.depend
 
 include .depend

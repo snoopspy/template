@@ -23,4 +23,4 @@ deps_check:
 	@echo "deps_check"
 
 $(_SUB_PROJS):
-	@cd $@ && make && cd ..
+	@cd $@ && make $(MAKECMDGOALS) && cd ..

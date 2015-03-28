@@ -8,8 +8,12 @@ _SRCS = $(wildcard *.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
 _LIB  = lib$(shell basename $(PWD)).a
 
+CPPFLAGS += -Wall
+
 all: release
+debug: CPPFLAGS += -O0
 debug: build
+release: CPPFLAGS += -O2
 release: build
 build: $(_LIB)
 
