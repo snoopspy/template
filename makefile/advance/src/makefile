@@ -2,7 +2,7 @@
 # src/makefile
 # ------------------------------------------------------------------------------
 
-.PHONY: all debug release build clean temp
+.PHONY: all debug release build clean temp depend
 
 _ABS_PATH := $(shell dirname $(PWD))
 _REL_PATH := ..
@@ -14,16 +14,17 @@ _EXEC = ../bin/hello_world
 
 CPPFLAGS += -Wall -g
 
+#LDLIBS += -lpthread
+
 all: release
 
-debug: CPPFLAGS := -D_DEBUG $(CPPFLAGS)
+debug: CPPFLAGS += -O0
 debug: build
 
-release: CPPFLAGS := -D_RELEASE -DNDEBUG $(CPPFLAGS)
+release: CPPFLAGS += -O2
 release: build
 	
 build: $(_EXEC)
-
 
 $(_OBJS): $(MAKEFILE_LIST)
 
@@ -38,6 +39,8 @@ temp:
 	@echo "_ABS_PATH  ="$(_ABS_PATH)
 	@echo "_REL_PATH  ="$(_REL_PATH)
 	@echo "MYLIBC_PATH="$(MYLIBC_PATH)
+
+.depend: .depend
 
 .depend: $(_SRCS)
 	rm -f ./.depend
