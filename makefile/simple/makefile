@@ -22,7 +22,6 @@ $(_EXEC): $(_OBJS) $(MAKEFILE_LIST)
 	$(LINK.cc) -o $@ $(_OBJS) $(LOADLIBES) $(LDLIBS)
 
 clean:
-	rm -f ./.depend
 	rm -rf $(_OBJS)
 	rm -rf $(_EXEC)
 

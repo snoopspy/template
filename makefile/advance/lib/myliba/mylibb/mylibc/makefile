@@ -23,7 +23,6 @@ $(_LIB): $(_OBJS) $(MAKEFILE_LIST)
 	$(AR) $(ARFLAGS) -o $@ $(_OBJS)
 
 clean:
-	rm -f ./.depend
 	rm -rf $(_OBJS)
 	rm -rf $(_LIB)
 
