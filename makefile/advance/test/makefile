@@ -2,13 +2,13 @@
 # test/makefile
 # ------------------------------------------------------------------------------
 
-_SUB_PROJS := test1 test2
-.PHONY: all debug release build clean temp depend $(_SUB_PROJS)
+_SUBDIRS := test1 test2
+.PHONY: all debug release build clean temp depend $(_SUBDIRS)
 
 _SRCS = $(wildcard */*.c) $(wildcard */*.cc) $(wildcard */*.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
 _DEPS = $(_OBJS:%.o=%.d)
-_EXEC = $(addprefix ../bin/,$(_SUB_PROJS))
+_EXEC = $(addprefix ../bin/,$(_SUBDIRS))
 
 CPPFLAGS += -Wall -g
 LDLIBS += -lpthread
@@ -21,7 +21,7 @@ debug: build
 release: CPPFLAGS += -O2
 release: build
 
-build: $(_SUB_PROJS)
+build: $(_SUBDIRS)
 
 clean:
 	rm -rf $(_DEPS)
@@ -32,7 +32,7 @@ temp:
 	@echo "_SRCS="$(_SRCS)
 	@echo "_OBJS="$(_OBJS)
 	@echo "_DEPS="$(_DEPS)
-	@echo "_SUB_PROJS="$(_SUB_PROJS)
+	@echo "_SUBDIRS="$(_SUBDIRS)
 	@echo "_EXEC="$(_EXEC)
 
 depend: $(_DEPS) $(MAKEFILE_LIST)
@@ -42,9 +42,9 @@ $(_OBJS): $(MAKEFILE_LIST)
 $(_EXEC): $(_OBJS) $(MAKEFILE_LIST)
 	$(LINK.cc) -o ../bin/$@ $(shell ls $(addsuffix /*.o,$(notdir $@))) $(LOADLIBES) $(LDLIBS)
 
-$(_SUB_PROJS): $(_EXEC)
+$(_SUBDIRS): $(_EXEC)
 
-#$(_SUB_PROJS): $(_OBJS) $(MAKEFILE_LIST)
+#$(_SUBDIRS): $(_OBJS) $(MAKEFILE_LIST)
 #	@#echo "_SUB_OBJS="$(shell ls $(basename $@)/*.o)
 #	@echo "______"$@
 #	@#echo "_SUB_OBJS="$(shell ls $(basename $@)/*.o)
@@ -61,5 +61,5 @@ $(_SUB_PROJS): $(_EXEC)
 
 _NODEPS=clean temp depend
 ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(_NODEPS))))
-	include $(_DEPS)
+	-include $(_DEPS)
 endif

@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# lib/myliba/mylibb/mylibc/makefile
+# lib/mylibc/makefile
 # ------------------------------------------------------------------------------
 
 .PHONY: all debug release build clean temp depend
@@ -32,7 +32,7 @@ clean:
 	rm -rf $(_LIB)
 
 temp:
-	@echo "lib/myliba/mylibb/mylibc temp"
+	@echo "lib/mylibc temp"
 
 depend: $(_DEPS) $(MAKEFILE_LIST)
 

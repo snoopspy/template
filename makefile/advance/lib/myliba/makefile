@@ -4,9 +4,9 @@
 
 .PHONY: all debug release build clean temp depend
 
-_ABS_PATH := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-_REL_PATH := .
-include mylibb/mylibb.mk
+_ABSDIR := $(shell dirname $(PWD))
+_RELDIR := ..
+include ../mylibb/mylibb.mk
 
 _SRCS = $(wildcard *.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
@@ -33,6 +33,8 @@ clean:
 
 temp:
 	@echo "lib/myliba temp"
+	@echo "_ABSDIR"=$(_ABSDIR)
+	@echo "_RELDIR"=$(_RELDIR)	
 
 depend: $(_DEPS) $(MAKEFILE_LIST)
 

@@ -2,25 +2,30 @@
 # makefile
 # ------------------------------------------------------------------------------
 
-_SUB_PROJS = lib src test
-.PHONY: all debug release build clean temp $(_SUB_PROJS)
+_SUBDIRS = lib src test
+.PHONY: all debug release build clean temp depend $(_SUBDIRS)
 
-#
-# targets
-#
 all: deps_check
 	@cd lib  && make release && cd ..
 	@cd src  && make release && cd ..
 	@cd test && make debug   && cd ..
 	
-debug   : build
-release : build
-build   : $(_SUB_PROJS)
-clean   : $(_SUB_PROJS)
-temp    : $(_SUB_PROJS)
+debug  : $(_SUBDIRS)
+release: $(_SUBDIRS)
+build  : $(_SUBDIRS)
+clean  : $(_SUBDIRS)
+temp   :
+depend : $(_SUBDIRS)
 
 deps_check:
 	@echo "deps_check"
 
-$(_SUB_PROJS):
-	@cd $@ && make $(MAKECMDGOALS) && cd ..
+$(_SUBDIRS):
+	@if [ -d $(MAKECMDGOALS) ]; then \
+		cd $@ && make ;\
+	else \
+		cd $@ && make $(MAKECMDGOALS);\
+	fi
+
+src: lib
+test: src
