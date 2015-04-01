@@ -2,11 +2,10 @@
 
 _SRCS = $(wildcard *.c) $(wildcard *.cc) $(wildcard *.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
-_DEPS = $(_OBJS:%.o=.deps/%.d)
+_DEPS = $(_OBJS:%.o=%.d)
 _EXEC = $(shell basename $(PWD))
 
 CPPFLAGS += -Wall -g
-
 LDLIBS += -lpthread
 
 all: release
@@ -25,30 +24,28 @@ clean:
 	rm -rf $(_EXEC)
 
 temp:
+	@echo "_SRCS="$(_SRCS)
+	@echo "_OBJS="$(_OBJS)
 	@echo "_DEPS="$(_DEPS)
-	@echo "COMPILE.cc="$(COMPILE.cc)
-
-depend: $(_DEPS) $(MAKEFILE_LIST)
-
-_NODEPS=clean temp
-ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(_NODEPS))))
-	-include $(_DEPS)
-endif
-
-.deps/%.d: %.c
-	@mkdir -p .deps
-	$(COMPILE.c) -MM $< > $@
-
-.deps/%.d: %.cc
-	@mkdir -p .deps
-	$(COMPILE.cc) -MM $< > $@
+	@echo "_EXEC="$(_EXEC)
 	
-.deps/%.d: %.cpp
-	@mkdir -p .deps
-	$(COMPILE.cc) -MM $< > $@
+depend: $(_DEPS) $(MAKEFILE_LIST)
 
 $(_OBJS): $(MAKEFILE_LIST)
 
 $(_EXEC): $(_OBJS) $(MAKEFILE_LIST)
 	$(LINK.cc) -o $@ $(_OBJS) $(LOADLIBES) $(LDLIBS)
+
+%.d: %.c
+	$(COMPILE.c) -MM $< > $@
 	
+%.d: %.cc
+	$(COMPILE.cc) -MM $< > $@
+
+%.d: %.cpp
+	$(COMPILE.cc) -MM $< > $@
+
+_NODEPS=clean temp depend
+ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(_NODEPS))))
+	-include $(_DEPS)
+endif
