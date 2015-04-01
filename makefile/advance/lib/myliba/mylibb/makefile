@@ -2,8 +2,7 @@
 # lib/myliba/mylibb/makefile
 # ------------------------------------------------------------------------------
 
-_SUB_PROJS = mylibc
-.PHONY: all debug release build clean temp
+.PHONY: all debug release build clean temp depend
 
 _ABS_PATH := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 _REL_PATH := .
@@ -11,39 +10,47 @@ include mylibc/mylibc.mk
 
 _SRCS = $(wildcard *.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
+_DEPS = $(_OBJS:%.o=%.d)
 _LIB  = lib$(shell basename $(PWD)).a
 
-CPPFLAGS += -Wall
+CPPFLAGS += -Wall -g
+LDLIBS += -lpthread
 
 all: release
+
 debug: CPPFLAGS += -O0
 debug: build
+
 release: CPPFLAGS += -O2
 release: build
-build: $(_SUB_PROJS) $(_LIB)
+
+build: $(_LIB)
+
+clean:
+	rm -rf $(_OBJS)
+	rm -rf $(_DEPS)	
+	rm -rf $(_LIB)
+
+temp:
+	@echo "lib/myliba/mylibb temp"
+
+depend: $(_DEPS) $(MAKEFILE_LIST)
 
 $(_OBJS): $(MAKEFILE_LIST)
 
 $(_LIB): $(_OBJS) $(MAKEFILE_LIST)
 	$(AR) $(ARFLAGS) -o $@ $(_OBJS)
 
-clean:
-	rm -rf $(_OBJS)
-	rm -rf $(_LIB)
-
-temp:
-	@echo "lib/myliba/mylibb temp"
-	@echo "_ABS_PATH   ="$(_ABS_PATH)
-	@echo "_REL_PATH   ="$(_REL_PATH)
-	@echo "_MYLIBC_PATH="$(_MYLIBC_PATH)
-	@echo "MYLIBC_PATH ="$(MYLIBC_PATH)
+%.d: %.c
+	$(COMPILE.c) -MM $< > $@
 	
-	@echo "CPPFLAGS   ="$(CPPFLAGS)
+%.d: %.cc
+	$(COMPILE.cc) -MM $< > $@
 
-depend: .depend
+%.d: %.cpp
+	$(COMPILE.cc) -MM $< > $@
 
-.depend: $(_SRCS)
-	rm -f ./.depend
-	$(CXX) $(CPPFLAGS) -MM $(_SRCS) > ./.depend
-
-include .depend
+_NODEPS=clean temp depend
+ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(_NODEPS))))
+	-include $(_DEPS)
+endif

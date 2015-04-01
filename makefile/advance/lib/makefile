@@ -7,11 +7,9 @@ _SUB_PROJS = myliba myliba/mylibb myliba/mylibb/mylibc
 
 export CPPFLAGS += -Wall -g
 
-all    : release
-debug  : export CPPFLAGS += -O0
-debug  : build
-release: export CPPFLAGS += -O2
-release: build
+all    : $(_SUB_PROJS)
+debug  : $(_SUB_PROJS)
+release: $(_SUB_PROJS)
 build  : $(_SUB_PROJS)
 clean  : $(_SUB_PROJS)
 temp   :

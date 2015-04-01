@@ -2,7 +2,7 @@
 # lib/myliba/makefile
 # ------------------------------------------------------------------------------
 
-.PHONY: all debug release build clean temp
+.PHONY: all debug release build clean temp depend
 
 _ABS_PATH := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 _REL_PATH := .
@@ -10,29 +10,47 @@ include mylibb/mylibb.mk
 
 _SRCS = $(wildcard *.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
+_DEPS = $(_OBJS:%.o=%.d)
 _LIB  = lib$(shell basename $(PWD)).a
 
+CPPFLAGS += -Wall -g
+LDLIBS += -lpthread
+
 all: release
+
+debug: CPPFLAGS += -O0
 debug: build
+
+release: CPPFLAGS += -O2
 release: build
+
 build: $(_LIB)
+
+clean:
+	rm -rf $(_OBJS)
+	rm -rf $(_DEPS)	
+	rm -rf $(_LIB)
+
+temp:
+	@echo "lib/myliba temp"
+
+depend: $(_DEPS) $(MAKEFILE_LIST)
 
 $(_OBJS): $(MAKEFILE_LIST)
 
 $(_LIB): $(_OBJS) $(MAKEFILE_LIST)
 	$(AR) $(ARFLAGS) -o $@ $(_OBJS)
 
-clean:
-	rm -rf $(_OBJS)
-	rm -rf $(_LIB)
+%.d: %.c
+	$(COMPILE.c) -MM $< > $@
 
-temp:
-	@echo "lib/myliba temp"
+%.d: %.cc
+	$(COMPILE.cc) -MM $< > $@
 
-depend: .depend
+%.d: %.cpp
+	$(COMPILE.cc) -MM $< > $@
 
-.depend: $(_SRCS)
-	rm -f ./.depend
-	$(CXX) $(CPPFLAGS) -MM $(_SRCS) > ./.depend
-
-include .depend
+_NODEPS=clean temp depend
+ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(_NODEPS))))
+	-include $(_DEPS)
+endif
