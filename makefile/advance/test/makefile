@@ -23,7 +23,7 @@ temp:
 
 $(_SUBDIRS):
 	@if [ -d $(MAKECMDGOALS) ]; then \
-		$(MAKE) -f _makefile _SUBDIR=$@ --no-print-directory ;\
+		cd $@ && $(MAKE) -f ../_makefile --no-print-directory ;\
 	else \
-		 $(MAKE) $(MAKECMDGOALS) -f _makefile _SUBDIR=$@ --no-print-directory ;\
+		cd $@ && $(MAKE) $(MAKECMDGOALS) -f ../_makefile --no-print-directory ;\
 	fi

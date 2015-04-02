@@ -4,10 +4,10 @@
 
 .PHONY: all debug release build clean depend temp
 
-_SRCS = $(wildcard $(_SUBDIR)/*.c) $(wildcard $(_SUBDIR)/*.cc) $(wildcard $(_SUBDIR)/*.cpp)
+_SRCS = $(wildcard *.c) $(wildcard *.cc) $(wildcard *.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
 _DEPS = $(_OBJS:%.o=%.d)
-_EXEC = ../bin/$(shell basename $(PWD))
+_EXEC = ../../bin/$(shell basename $(PWD))
 
 CPPFLAGS += -Wall -g
 LDLIBS += -lpthread
@@ -31,7 +31,7 @@ depend: $(_DEPS) $(MAKEFILE_LIST)
 
 temp:
 	@echo "PWD      ="$(PWD)
-	@echo "_SUBDIR ="$(_SUBDIR)
+	@echo "TARGET ="$(TARGET)
 	@echo "_SRCS="$(_SRCS)
 	@echo "_OBJS="$(_OBJS)
 	@echo "_DEPS="$(_DEPS)
