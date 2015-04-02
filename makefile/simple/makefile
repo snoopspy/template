@@ -45,7 +45,7 @@ $(_EXEC): $(_OBJS) $(MAKEFILE_LIST)
 %.d: %.cpp
 	$(COMPILE.cc) -MM $< > $@
 
-_NODEPS=clean temp depend
+_NODEPS=clean depend temp
 ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(_NODEPS))))
 	-include $(_DEPS)
 endif

@@ -1,37 +1,39 @@
-SOURCES += $(wildcard *.c)   $(wildcard *.cc)   $(wildcard *.cpp)   $(wildcard *.cxx)
-SOURCES += $(wildcard */*.c) $(wildcard */*.cc) $(wildcard */*.cpp) $(wildcard */*.cxx)
-OBJECTS = $(addsuffix .o,$(basename $(SOURCES)))
-TARGET = $(shell basename $(PWD))
+.PHONY: all debug release build clean temp
+
+_SRCS += $(wildcard *.c)   $(wildcard *.cc)   $(wildcard *.cpp)   $(wildcard *.cxx)
+_SRCS += $(wildcard */*.c) $(wildcard */*.cc) $(wildcard */*.cpp) $(wildcard */*.cxx)
+_OBJS = $(addsuffix .o,$(basename $(_SRCS)))
+_EXEC = $(shell basename $(PWD))
 
 CFLAGS    = -DCFLAGS
 CXXFLAGS  = -DCXXFLAGS
 CPPFLAGS  = -DCPPFLAGS
-
 LDFLAGS   = -DLDFLAGS
-
 LOADLIBES = -DLOADLIBES
 LDLIBS    = -DLDLIBS
-
-first: all
 
 all: release
 
 debug: CPPFLAGS += -DDEBUG
-debug: $(TARGET)
+debug: build
 
 release: CPPFLAGS += -DRELEASE
-release: $(TARGET)
+release: build
+
+build: $(_EXEC)
+
+clean:
+	rm -rf $(_OBJS)
+	rm -rf $(_EXEC)
+
+temp:
+	@echo "_SRCS="$(_SRCS)
+	@echo "_OBJS="$(_OBJS)
 
 %.o: %.cxx
 	$(COMPILE.cc) $(OUTPUT_OPTION) $<
 
-$(TARGET): $(OBJECTS)
-	$(LINK.cc) -o $@ $(OBJECTS) $(LOADLIBES) $(LDLIBS)
+$(_OBJS): $(MAKEFILE_LIST)
 
-list:
-	@echo "SOURCES="$(SOURCES)
-	@echo "OBJECTS="$(OBJECTS)
-
-clean:
-	rm -rf $(OBJECTS)
-	rm -rf $(TARGET)
+$(_EXEC): $(_OBJS) $(MAKEFILE_LIST)
+	$(LINK.cc) -o $@ $(_OBJS) $(LOADLIBES) $(LDLIBS)

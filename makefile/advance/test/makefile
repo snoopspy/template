@@ -24,8 +24,8 @@ release: build
 build: $(_SUBDIRS)
 
 clean:
-	rm -rf $(_DEPS)
 	rm -rf $(_OBJS)
+	rm -rf $(_DEPS)
 	rm -rf $(_EXEC)
 
 depend: $(_DEPS) $(MAKEFILE_LIST)
@@ -59,7 +59,7 @@ $(_SUBDIRS): $(_EXEC)
 %.d: %.cpp
 	$(COMPILE.cc) -MM $< > $@
 
-_NODEPS=clean temp depend
+_NODEPS=clean depend temp
 ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(_NODEPS))))
 	-include $(_DEPS)
 endif

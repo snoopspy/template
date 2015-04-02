@@ -2,10 +2,10 @@
 
 _SRCS = $(wildcard *.c) $(wildcard *.cc) $(wildcard *.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
+_DEPS = $(_OBJS:%.o=%.d)
 _EXEC = $(shell basename $(PWD))
 
 CPPFLAGS += -Wall -g
-
 LDLIBS += -lpthread
 
 all: release
@@ -18,23 +18,31 @@ release: build
 
 build: $(_EXEC)
 
+clean:
+	rm -rf $(_OBJS)
+	rm -rf $(_DEPS)
+	rm -rf $(_EXEC)
+
+depend: $(_DEPS) $(MAKEFILE_LIST)
+
+temp:
+	@echo "MAKEFILE_LIST="$(MAKEFILE_LIST)
+
 $(_OBJS): $(MAKEFILE_LIST)
 
 $(_EXEC): $(_OBJS) $(MAKEFILE_LIST)
 	$(LINK.cc) -o $@ $(_OBJS) $(LOADLIBES) $(LDLIBS)
 
-clean:
-	rm -rf ./.depend
-	rm -rf $(_OBJS)
-	rm -rf $(_EXEC)
+%.d: %.c
+	$(COMPILE.c) -MM $< > $@
 
-depend: .depend
+%.d: %.cc
+	$(COMPILE.cc) -MM $< > $@
 
-temp:
-	@echo "MAKEFILE_LIST="$(MAKEFILE_LIST)
+%.d: %.cpp
+	$(COMPILE.cc) -MM $< > $@
 
-.depend: $(MAKEFILE_LIST)
-	rm -f ./.depend
-	$(CXX) $(CPPFLAGS) -MM $(_SRCS) > ./.depend
-
-include .depend
+_NODEPS=clean temp depend
+ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(_NODEPS))))
+	-include $(_DEPS)
+endif

@@ -8,7 +8,7 @@ _ABSDIR := $(shell dirname $(PWD))
 _RELDIR := ..
 include ../mylibc/mylibc.mk
 
-_SRCS = $(wildcard *.cpp)
+_SRCS = $(wildcard *.c) $(wildcard *.cc) $(wildcard *.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
 _DEPS = $(_OBJS:%.o=%.d)
 _LIB  = lib$(shell basename $(PWD)).a
@@ -52,7 +52,7 @@ $(_LIB): $(_OBJS) $(MAKEFILE_LIST)
 %.d: %.cpp
 	$(COMPILE.cc) -MM $< > $@
 
-_NODEPS=clean temp depend
+_NODEPS=clean depend temp
 ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(_NODEPS))))
 	-include $(_DEPS)
 endif
