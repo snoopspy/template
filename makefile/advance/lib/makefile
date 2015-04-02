@@ -19,12 +19,13 @@ depend:  $(_SUBDIRS)
 
 temp:
 	@echo "MAKECMDGOALS="$(MAKECMDGOALS)
+	@echo "MAKE="$(MAKE)
 
 $(_SUBDIRS):
 	@if [ -d $(MAKECMDGOALS) ]; then \
-		cd $@ && make ;\
+		cd $@ && $(MAKE) --no-print-directory ;\
 	else \
-		cd $@ && make $(MAKECMDGOALS);\
+		cd $@ && $(MAKE) $(MAKECMDGOALS) --no-print-directory ;\
 	fi
 	
 # myliba: mylibb # gilgil temp

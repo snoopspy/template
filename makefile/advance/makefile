@@ -6,9 +6,9 @@ _SUBDIRS = lib src test
 .PHONY: all debug release build clean depend temp deps_check $(_SUBDIRS)
 
 all: deps_check
-	@cd lib  && make release
-	@cd src  && make release
-	@cd test && make debug
+	@cd lib  && $(MAKE) release --no-print-directory
+	@cd src  && $(MAKE) release --no-print-directory
+	@cd test && $(MAKE) debug --no-print-directory
 	
 debug:   $(_SUBDIRS)
 
@@ -27,9 +27,9 @@ deps_check:
 
 $(_SUBDIRS):
 	@if [ -d $(MAKECMDGOALS) ]; then \
-		cd $@ && make ;\
+		cd $@ && $(MAKE) --no-print-directory ;\
 	else \
-		cd $@ && make $(MAKECMDGOALS);\
+		cd $@ && $(MAKE) $(MAKECMDGOALS) --no-print-directory ;\
 	fi
 
 src: lib
