@@ -1,4 +1,4 @@
-.PHONY: all debug release build clean temp depend
+.PHONY: all debug release build clean depend temp
 
 _SRCS = $(wildcard *.c) $(wildcard *.cc) $(wildcard *.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
@@ -23,13 +23,13 @@ clean:
 	rm -rf $(_DEPS)	
 	rm -rf $(_EXEC)
 
+depend: $(_DEPS) $(MAKEFILE_LIST)
+
 temp:
 	@echo "_SRCS="$(_SRCS)
 	@echo "_OBJS="$(_OBJS)
 	@echo "_DEPS="$(_DEPS)
 	@echo "_EXEC="$(_EXEC)
-	
-depend: $(_DEPS) $(MAKEFILE_LIST)
 
 $(_OBJS): $(MAKEFILE_LIST)
 

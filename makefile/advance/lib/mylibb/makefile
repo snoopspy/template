@@ -2,7 +2,7 @@
 # lib/mylibb/makefile
 # ------------------------------------------------------------------------------
 
-.PHONY: all debug release build clean temp depend
+.PHONY: all debug release build clean depend temp
 
 _ABSDIR := $(shell dirname $(PWD))
 _RELDIR := ..
@@ -31,12 +31,12 @@ clean:
 	rm -rf $(_DEPS)	
 	rm -rf $(_LIB)
 
+depend: $(_DEPS) $(MAKEFILE_LIST)
+
 temp:
 	@echo "lib/mylibb temp"
 	@echo "_ABSDIR"=$(_ABSDIR)
 	@echo "_RELDIR"=$(_RELDIR)
-
-depend: $(_DEPS) $(MAKEFILE_LIST)
 
 $(_OBJS): $(MAKEFILE_LIST)
 

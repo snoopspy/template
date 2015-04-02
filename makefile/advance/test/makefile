@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 
 _SUBDIRS := test1 test2
-.PHONY: all debug release build clean temp depend $(_SUBDIRS)
+.PHONY: all debug release build clean depend temp $(_SUBDIRS)
 
 _SRCS = $(wildcard */*.c) $(wildcard */*.cc) $(wildcard */*.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
@@ -27,15 +27,15 @@ clean:
 	rm -rf $(_DEPS)
 	rm -rf $(_OBJS)
 	rm -rf $(_EXEC)
-	
+
+depend: $(_DEPS) $(MAKEFILE_LIST)
+
 temp:
 	@echo "_SRCS="$(_SRCS)
 	@echo "_OBJS="$(_OBJS)
 	@echo "_DEPS="$(_DEPS)
 	@echo "_SUBDIRS="$(_SUBDIRS)
 	@echo "_EXEC="$(_EXEC)
-
-depend: $(_DEPS) $(MAKEFILE_LIST)
 
 $(_OBJS): $(MAKEFILE_LIST)
 

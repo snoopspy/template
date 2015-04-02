@@ -2,7 +2,7 @@
 # src/makefile
 # ------------------------------------------------------------------------------
 
-.PHONY: all debug release build clean temp depend
+.PHONY: all debug release build clean depend temp
 
 _ABSDIR := $(shell dirname $(PWD))
 _RELDIR := ..
@@ -32,12 +32,12 @@ clean:
 	rm -rf $(_DEPS)
 	rm -rf $(_EXEC)
 
+depend: $(_DEPS) $(MAKEFILE_LIST)
+
 temp:
 	@echo "_ABSDIR  ="$(_ABSDIR)
 	@echo "_RELDIR  ="$(_RELDIR)
 	@echo "MYLIBC_PATH="$(MYLIBC_PATH)
-
-depend: $(_DEPS) $(MAKEFILE_LIST)
 
 $(_OBJS): $(MAKEFILE_LIST)
 
