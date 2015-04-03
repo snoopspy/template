@@ -1,8 +1,8 @@
 #include <iostream>
-#include "liba.h"
+#include "lib1.h"
 
-void liba()
+void lib1()
 {
-  std::cout << "liba\n";
-  libb();
+  std::cout << "lib1\n";
+  lib2();
 }

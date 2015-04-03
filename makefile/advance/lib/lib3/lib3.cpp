@@ -1,7 +1,7 @@
 #include <iostream>
-#include "libc.h"
+#include "lib3.h"
 
-void libc()
+void lib3()
 {
-  std::cout << "libc\n";
+  std::cout << "lib3\n";
 }

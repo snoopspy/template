@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# lib/libc/makefile
+# lib/lib3/makefile
 # ------------------------------------------------------------------------------
 
 .PHONY: all debug release build clean depend temp
@@ -34,7 +34,7 @@ clean:
 depend: $(_DEPS) $(MAKEFILE_LIST)
 
 temp:
-	@echo "lib/libc temp"
+	@echo "lib/lib3 temp"
 
 $(_OBJS): $(MAKEFILE_LIST)
 

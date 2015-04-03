@@ -1,3 +1,3 @@
 #pragma once
 
-void libc();
+void lib3();

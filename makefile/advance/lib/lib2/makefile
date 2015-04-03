@@ -1,12 +1,12 @@
 # ------------------------------------------------------------------------------
-# lib/libb/makefile
+# lib/lib2/makefile
 # ------------------------------------------------------------------------------
 
 .PHONY: all debug release build clean depend temp
 
 _ABSDIR := $(shell dirname $(PWD))
 _RELDIR := ..
-include ../libc/libc.mk
+include ../lib3/lib3.mk
 
 _SRCS = $(wildcard *.c) $(wildcard *.cc) $(wildcard *.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
@@ -34,7 +34,7 @@ clean:
 depend: $(_DEPS) $(MAKEFILE_LIST)
 
 temp:
-	@echo "lib/libb temp"
+	@echo "lib/lib2 temp"
 	@echo "_ABSDIR"=$(_ABSDIR)
 	@echo "_RELDIR"=$(_RELDIR)
 
