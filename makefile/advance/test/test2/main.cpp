@@ -1,9 +1,9 @@
 #include <iostream>
-#include "foo2.h"
+#include "test2.h"
 
 int main()
 {
-  std::cout << "test2\n";
-  foo2();
+  std::cout << "main test2\n";
+  test2();
   return 0;
 }

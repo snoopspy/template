@@ -1,7 +1,9 @@
 #include <iostream>
+#include "test3.h"
 
 int main()
 {
-  std::cout << "test3\n";
+  std::cout << "main test3\n";
+  test3();
   return 0;
 }
