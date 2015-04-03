@@ -1,5 +1,5 @@
 #pragma once
 
-#include "mylibb.h"
+#include "libb.h"
 
-void myliba();
+void liba();

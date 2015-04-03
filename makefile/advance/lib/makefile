@@ -2,7 +2,7 @@
 # lib/makefile
 # ------------------------------------------------------------------------------
 
-_SUBDIRS = mylibc mylibb myliba
+_SUBDIRS = libc libb liba
 .PHONY: all debug release build clean depend temp $(_SUBDIRS)
 
 all:     $(_SUBDIRS)
@@ -28,5 +28,5 @@ $(_SUBDIRS):
 		cd $@ && $(MAKE) $(MAKECMDGOALS) --no-print-directory ;\
 	fi
 	
-# myliba: mylibb # gilgil temp
-# mylibb: mylibc # gilgil temp
+# liba: libb # gilgil temp
+# libb: libc # gilgil temp
