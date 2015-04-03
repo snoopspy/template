@@ -6,7 +6,7 @@
 
 _ABSDIR := $(shell dirname $(PWD))
 _RELDIR := ..
-include ../lib3/lib3.mk
+include ../lib1/lib1.mk
 
 _SRCS = $(wildcard *.c) $(wildcard *.cc) $(wildcard *.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))

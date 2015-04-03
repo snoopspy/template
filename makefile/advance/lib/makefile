@@ -2,7 +2,7 @@
 # lib/makefile
 # ------------------------------------------------------------------------------
 
-_SUBDIRS = lib3 lib2 lib1
+_SUBDIRS = lib1 lib2 lib3
 .PHONY: all debug release build clean depend temp $(_SUBDIRS)
 
 all:     $(_SUBDIRS)
@@ -28,5 +28,5 @@ $(_SUBDIRS):
 		cd $@ && $(MAKE) $(MAKECMDGOALS) --no-print-directory ;\
 	fi
 	
-# lib1: lib2 # gilgil temp
-# lib2: lib3 # gilgil temp
+lib2: lib1
+lib3: lib2

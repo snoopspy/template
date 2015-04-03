@@ -3,5 +3,6 @@
 
 void test1()
 {
+  lib1();
   std::cout << "test1\n";
 }

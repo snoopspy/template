@@ -4,5 +4,4 @@
 void lib1()
 {
   std::cout << "lib1\n";
-  lib2();
 }

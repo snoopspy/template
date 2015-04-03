@@ -4,6 +4,8 @@
 
 .PHONY: all debug release build clean depend temp
 
+include ../../lib/lib3/lib3.mk
+
 _SRCS = $(wildcard *.c) $(wildcard *.cc) $(wildcard *.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
 _DEPS = $(_OBJS:%.o=%.d)

@@ -4,9 +4,9 @@
 
 .PHONY: all debug release build clean depend temp
 
-
-
-
+_ABSDIR := $(shell dirname $(PWD))
+_RELDIR := ..
+include ../lib2/lib2.mk
 
 _SRCS = $(wildcard *.c) $(wildcard *.cc) $(wildcard *.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
