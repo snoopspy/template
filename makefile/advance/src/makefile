@@ -7,14 +7,12 @@
 _ABSDIR := $(shell dirname $(PWD))
 _RELDIR := ..
 include ../lib/lib3/lib3.mk
+include src.mk
 
 _SRCS = $(wildcard *.c) $(wildcard *.cc) $(wildcard *.cpp)
 _OBJS = $(addsuffix .o,$(basename $(_SRCS)))
 _DEPS = $(_OBJS:%.o=%.d)
 _EXEC = ../bin/hello_world
-
-CPPFLAGS += -Wall -g
-#LDLIBS += -lpthread
 
 all: release
 
@@ -36,7 +34,6 @@ depend: $(_DEPS) $(MAKEFILE_LIST)
 temp:
 	@echo "_ABSDIR  ="$(_ABSDIR)
 	@echo "_RELDIR  ="$(_RELDIR)
-	@echo "MYLIBC_DIR="$(MYLIBC_DIR)
 
 $(_OBJS): $(MAKEFILE_LIST)
 

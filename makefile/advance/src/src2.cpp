@@ -3,5 +3,6 @@
 
 void src2()
 {
+  lib2();
   std::cout << "src2\n";
 }

@@ -3,6 +3,7 @@
 
 void test3()
 {
-  lib3();
   std::cout << "test3\n";
+  lib3();
+  src3();
 }
