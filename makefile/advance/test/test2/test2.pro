@@ -1,8 +1,9 @@
 include(../../src/src.pri)
 
 CONFIG -= qt
-TEMPLATE = app
 DESTDIR = $${PWD}/../../bin
+TEMPLATE = app
+QMAKE_CLEAN += Makefile $${DESTDIR}/$${TARGET}
 
 HEADERS += *.h $${SRC_DIR}/*.h
 
