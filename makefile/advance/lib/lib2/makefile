@@ -18,10 +18,10 @@ LDLIBS += -lpthread
 
 all: release
 
-debug: CPPFLAGS += -O0
+debug: CPPFLAGS += -O0 -D_DEBUG
 debug: build
 
-release: CPPFLAGS += -O2
+release: CPPFLAGS += -O2 -D_RELEASE
 release: build
 
 build: $(_LIB)

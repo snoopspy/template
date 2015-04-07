@@ -3,7 +3,11 @@
 
 int main()
 {
-  std::cout << "main test3\n";
+#ifdef _DEBUG
+  std::cout << "main test3 _DEBUG\n";
+#else
+  std::cout << "main test3 _RELEASE\n";
+#endif
   test3();
   return 0;
 }

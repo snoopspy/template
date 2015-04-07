@@ -5,7 +5,11 @@
 
 int main()
 {
-  std::cout << "main src\n";
+#ifdef _DEBUG
+  std::cout << "main src _DEBUG\n";
+#else
+  std::cout << "main src _RELEASE\n";
+#endif
   src1();
   std::cout << std::endl;
   src2();

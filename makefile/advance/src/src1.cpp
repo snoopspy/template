@@ -4,5 +4,9 @@
 void src1()
 {
   lib1();
-  std::cout << "src1\n";
+#ifdef _DEBUG
+  std::cout << "src1 _DEBUG\n";
+#else
+  std::cout << "src1 _RELEASE\n";
+#endif
 }

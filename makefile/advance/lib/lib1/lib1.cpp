@@ -3,5 +3,9 @@
 
 void lib1()
 {
-  std::cout << "lib1\n";
+#ifdef _DEBUG
+  std::cout << "lib1 _DEBUG\n";
+#else
+  std::cout << "lib1 _RELEASE\n";
+#endif
 }

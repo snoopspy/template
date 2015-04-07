@@ -3,7 +3,11 @@
 
 void test3()
 {
-  std::cout << "test3\n";
+#ifdef _DEBUG
+  std::cout << "test3 _DEBUG\n";
+#else
+  std::cout << "test3 _RELEASE\n";
+#endif
   lib3();
   src3();
 }

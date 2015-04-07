@@ -4,5 +4,9 @@
 void src2()
 {
   lib2();
-  std::cout << "src2\n";
+#ifdef _DEBUG
+  std::cout << "src2 _DEBUG\n";
+#else
+  std::cout << "src2 _RELEASE\n";
+#endif
 }
