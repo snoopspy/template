@@ -1,7 +1,8 @@
 .PHONY: all debug release build clean depend temp
 
+_TMPDIR = .tmp
 _SRCS = $(wildcard *.c) $(wildcard *.cc) $(wildcard *.cpp)
-_OBJS = $(addsuffix .o,$(basename $(_SRCS)))
+_OBJS = $(addprefix $(_TMPDIR)/,$(addsuffix .o,$(basename $(_SRCS))))
 _DEPS = $(_OBJS:%.o=%.d)
 _EXEC = $(shell basename $(PWD))
 
@@ -16,36 +17,47 @@ debug: build
 release: CPPFLAGS += -O2 -D_RELEASE
 release: build
 
-build: $(_EXEC)
+build: $(_TMPDIR) $(_EXEC)
 
 clean:
 	rm -rf $(_OBJS)
-	rm -rf $(_DEPS)	
+	rm -rf $(_DEPS)
 	rm -rf $(_EXEC)
+	rm -rf $(_TMPDIR)
 
 depend: $(_DEPS) $(MAKEFILE_LIST)
 
 temp:
-	@echo "_SRCS="$(_SRCS)
-	@echo "_OBJS="$(_OBJS)
-	@echo "_DEPS="$(_DEPS)
-	@echo "_EXEC="$(_EXEC)
+	@echo "_ABSDIR  ="$(_ABSDIR)
+	@echo "_RELDIR  ="$(_RELDIR)
 
-$(_OBJS): $(MAKEFILE_LIST)
+$(_OBJS): $(MAKEFILE_LIST) | $(_TMPDIR)
 
 $(_EXEC): $(_OBJS) $(MAKEFILE_LIST)
 	$(LINK.cc) -o $@ $(_OBJS) $(LOADLIBES) $(LDLIBS)
 
-%.d: %.c
-	$(COMPILE.c) -MM $< > $@
-	
-%.d: %.cc
-	$(COMPILE.cc) -MM $< > $@
+$(_TMPDIR):
+	if [ ! -d $@ ] ; then mkdir $@ ; fi
 
-%.d: %.cpp
-	$(COMPILE.cc) -MM $< > $@
+$(_TMPDIR)/%.d: %.c | $(_TMPDIR)
+	$(COMPILE.c) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $@
 
-_NODEPS=clean depend temp
+$(_TMPDIR)/%.d: %.cc | $(_TMPDIR)
+	$(COMPILE.cc) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $@
+
+$(_TMPDIR)/%.d: %.cpp | $(_TMPDIR)
+	$(COMPILE.cpp) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $@
+
+$(_TMPDIR)/%.o: %.c
+	$(COMPILE.c) $(OUTPUT_OPTION) $<
+
+$(_TMPDIR)/%.o: %.cc
+	$(COMPILE.cc) $(OUTPUT_OPTION) $<
+
+$(_TMPDIR)/%.o: %.cpp
+	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
+
+_NODEPS=clean depend temp $(_TMPDIR)
 ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(_NODEPS))))
 	-include $(_DEPS)
 endif

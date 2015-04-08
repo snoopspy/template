@@ -8,10 +8,9 @@
 
 
 
-_TEMP = .tmp
-VPATH += $(_TEMP)
+_TMPDIR = .tmp
 _SRCS = $(wildcard *.c) $(wildcard *.cc) $(wildcard *.cpp)
-_OBJS = $(addprefix $(_TEMP)/,$(addsuffix .o,$(basename $(_SRCS))))
+_OBJS = $(addprefix $(_TMPDIR)/,$(addsuffix .o,$(basename $(_SRCS))))
 _DEPS = $(_OBJS:%.o=%.d)
 _LIB  = lib$(shell basename $(PWD)).a
 
@@ -26,13 +25,13 @@ debug: build
 release: CPPFLAGS += -O2 -D_RELEASE
 release: build
 
-build: $(_TEMP) $(_LIB)
+build: $(_TMPDIR) $(_LIB)
 
 clean:
 	rm -rf $(_OBJS)
 	rm -rf $(_DEPS)	
 	rm -rf $(_LIB)
-	rm -rf $(_TEMP)
+	rm -rf $(_TMPDIR)
 
 depend: $(_DEPS) $(MAKEFILE_LIST)
 
@@ -44,33 +43,33 @@ temp:
 	@echo "_OBJS  ="$(_OBJS)
 	@echo "_DEPS  ="$(_DEPS)
 
-$(_OBJS): $(MAKEFILE_LIST)
+$(_OBJS): $(MAKEFILE_LIST) | $(_TMPDIR)
 
 $(_LIB): $(_OBJS) $(MAKEFILE_LIST)
 	$(AR) $(ARFLAGS) -o $@ $(_OBJS)
 
-$(_TEMP):
-	mkdir -p $@
+$(_TMPDIR):
+	if [ ! -d $@ ] ; then mkdir $@ ; fi
 
-$(_TEMP)/%.d: %.c
-	$(COMPILE.c) -MM $< > $@
+$(_TMPDIR)/%.d: %.c | $(_TMPDIR)
+	$(COMPILE.c) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $@
 
-$(_TEMP)/%.d: %.cc
-	$(COMPILE.cc) -MM $< > $@
+$(_TMPDIR)/%.d: %.cc | $(_TMPDIR)
+	$(COMPILE.cc) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $@
 
-$(_TEMP)/%.d: %.cpp
-	$(COMPILE.cpp) -MM $< > $@
+$(_TMPDIR)/%.d: %.cpp | $(_TMPDIR)
+	$(COMPILE.cpp) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $@
 
-$(_TEMP)/%.o: %.c
+$(_TMPDIR)/%.o: %.c
 	$(COMPILE.c) $(OUTPUT_OPTION) $<
 
-$(_TEMP)/%.o: %.cc
+$(_TMPDIR)/%.o: %.cc
 	$(COMPILE.cc) $(OUTPUT_OPTION) $<
 
-$(_TEMP)/%.o: %.cpp
+$(_TMPDIR)/%.o: %.cpp
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 
-_NODEPS=clean depend temp
+_NODEPS=clean depend temp $(_TMPDIR) $(_TMPDIR)
 ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(_NODEPS))))
 	-include $(_DEPS)
 endif
