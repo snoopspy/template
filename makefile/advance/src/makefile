@@ -16,6 +16,9 @@ _OBJS = $(addprefix $(_TEMP)/,$(addsuffix .o,$(basename $(_SRCS))))
 _DEPS = $(_OBJS:%.o=%.d)
 _EXEC = ../bin/hello_world
 
+CPPFLAGS += -Wall -g
+LDLIBS += -lpthread
+
 all: release
 
 debug: CPPFLAGS += -O0 -D_DEBUG
