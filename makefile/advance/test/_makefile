@@ -19,6 +19,8 @@ _OBJS := $(addprefix $(_TMPDIR)/,$(_OBJS))
 _DEPS = $(_OBJS:%.o=%.d)
 _EXEC = ../../bin/$(shell basename $(PWD))
 
+vpath %.c . $(SRC_DIR)
+vpath %.cc . $(SRC_DIR)
 vpath %.cpp . $(SRC_DIR)
 
 CPPFLAGS += -Wall -g
@@ -63,10 +65,10 @@ $(_TMPDIR):
 	if [ ! -d $@ ] ; then mkdir $@ ; fi
 
 $(_TMPDIR)/%.d: %.c
-	$(COMPILE.c) -MM $< > $@
+	$(COMPILE.c) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $@
 
 $(_TMPDIR)/%.d: %.cc
-	$(COMPILE.cc) -MM $< > $@
+	$(COMPILE.cc) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $@
 
 $(_TMPDIR)/%.d: %.cpp
 	$(COMPILE.cpp) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $@
