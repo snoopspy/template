@@ -9,17 +9,17 @@ _RELDIR := ../..
 include ../../lib/lib3/lib3.mk
 include ../../src/src.mk
 
-_TEMP = .tmp
-VPATH += $(_TEMP)
-VPATH += $(SRC_DIR)
+_TMPDIR = .tmp
 _SRCS := $(wildcard *.c)            $(wildcard *.cc)            $(wildcard *.cpp)
 _SRCS += $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/*.cc) $(wildcard $(SRC_DIR)/*.cpp)
 _SRCS := $(filter-out $(SRC_DIR)/main.cpp,$(_SRCS))
 _OBJS := $(addsuffix .o,$(basename $(_SRCS)))
 _OBJS := $(subst $(SRC_DIR)/,,$(_OBJS))
-_OBJS := $(addprefix $(_TEMP)/,$(_OBJS))
+_OBJS := $(addprefix $(_TMPDIR)/,$(_OBJS))
 _DEPS = $(_OBJS:%.o=%.d)
 _EXEC = ../../bin/$(shell basename $(PWD))
+
+vpath %.cpp . $(SRC_DIR)
 
 CPPFLAGS += -Wall -g
 LDLIBS += -lpthread
@@ -32,15 +32,15 @@ debug: build
 release: CPPFLAGS += -O2 -D_RELEASE
 release: build
 
-build: $(_TEMP) $(_EXEC)
+build: $(_TMPDIR) $(_EXEC)
 
 clean:
 	rm -rf $(_OBJS)
 	rm -rf $(_DEPS)
 	rm -rf $(_EXEC)
-	rm -rf $(_TEMP)
+	rm -rf $(_TMPDIR)
 
-depend: $(_TEMP) $(_DEPS) $(MAKEFILE_LIST)
+depend: $(_TMPDIR) $(_DEPS) $(MAKEFILE_LIST)
 
 temp:
 	@echo "PWD    ="$(PWD)
@@ -51,7 +51,7 @@ temp:
 	@echo "_OBJS  ="$(_OBJS)
 	@echo "_DEPS  ="$(_DEPS)
 	@echo "VPATH  ="$(VPATH)
-	@echo "_TEMP  ="$(_TEMP)
+	@echo "_TMPDIR  ="$(_TMPDIR)
 	@echo "_EXEC  ="$(_EXEC)
 
 $(_OBJS): $(MAKEFILE_LIST)
@@ -59,28 +59,28 @@ $(_OBJS): $(MAKEFILE_LIST)
 $(_EXEC): $(_OBJS) $(MAKEFILE_LIST)
 	$(LINK.cc) -o $@ $(_OBJS) $(LOADLIBES) $(LDLIBS)
 
-$(_TEMP):
-	mkdir -p $@
+$(_TMPDIR):
+	if [ ! -d $@ ] ; then mkdir $@ ; fi
 
-$(_TEMP)/%.d: %.c
+$(_TMPDIR)/%.d: %.c
 	$(COMPILE.c) -MM $< > $@
 
-$(_TEMP)/%.d: %.cc
+$(_TMPDIR)/%.d: %.cc
 	$(COMPILE.cc) -MM $< > $@
 
-$(_TEMP)/%.d: %.cpp
-	$(COMPILE.cpp) -MM $< > $@
+$(_TMPDIR)/%.d: %.cpp
+	$(COMPILE.cpp) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $@
 
-$(_TEMP)/%.o: %.c
+$(_TMPDIR)/%.o: %.c
 	$(COMPILE.c) $(OUTPUT_OPTION) $<
 
-$(_TEMP)/%.o: %.cc
+$(_TMPDIR)/%.o: %.cc
 	$(COMPILE.cc) $(OUTPUT_OPTION) $<
 
-$(_TEMP)/%.o: %.cpp
+$(_TMPDIR)/%.o: %.cpp
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 
-_NODEPS=clean depend temp .tmp
+_NODEPS=clean depend temp $(_TMPDIR)
 ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(_NODEPS))))
 	-include $(_DEPS)
 endif
