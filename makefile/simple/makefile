@@ -39,23 +39,17 @@ $(_EXEC): $(_OBJS) $(MAKEFILE_LIST)
 $(_TMPDIR):
 	if [ ! -d $@ ] ; then mkdir $@ ; fi
 
-$(_TMPDIR)/%.d: %.c | $(_TMPDIR)
-	$(COMPILE.c) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $@
-
-$(_TMPDIR)/%.d: %.cc | $(_TMPDIR)
-	$(COMPILE.cc) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $@
-
-$(_TMPDIR)/%.d: %.cpp | $(_TMPDIR)
-	$(COMPILE.cpp) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $@
-
 $(_TMPDIR)/%.o: %.c
 	$(COMPILE.c) $(OUTPUT_OPTION) $<
+	$(COMPILE.c) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $(_TMPDIR)/$*.d
 
 $(_TMPDIR)/%.o: %.cc
 	$(COMPILE.cc) $(OUTPUT_OPTION) $<
+	$(COMPILE.cc) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $(_TMPDIR)/$*.d
 
 $(_TMPDIR)/%.o: %.cpp
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
+	$(COMPILE.cpp) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $(_TMPDIR)/$*.d
 
 _NODEPS=clean depend temp $(_TMPDIR)
 ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(_NODEPS))))
