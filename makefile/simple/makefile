@@ -2,8 +2,10 @@
 
 _TMPDIR = .tmp
 _SRCS = $(wildcard *.c) $(wildcard *.cc) $(wildcard *.cpp)
-_OBJS = $(addprefix $(_TMPDIR)/,$(addsuffix .o,$(basename $(_SRCS))))
+_OBJS = $(addprefix ,$(addsuffix .o,$(basename $(_SRCS))))
+#_OBJS = $(addsuffix .o, $(basename $(_SRCS)))
 _DEPS = $(_OBJS:%.o=%.d)
+#_DEPS = $(addsuffix .d, $(_SRCS))
 _EXEC = $(shell basename $(PWD))
 
 CPPFLAGS += -Wall -g
@@ -30,6 +32,8 @@ depend: $(_DEPS) $(MAKEFILE_LIST)
 temp:
 	@echo "_ABSDIR  ="$(_ABSDIR)
 	@echo "_RELDIR  ="$(_RELDIR)
+	@echo "_OBJS ="$(_OBJS)
+	@echo "_DEPS ="$(_DEPS)
 
 $(_OBJS): $(MAKEFILE_LIST) | $(_TMPDIR)
 
@@ -39,17 +43,23 @@ $(_EXEC): $(_OBJS) $(MAKEFILE_LIST)
 $(_TMPDIR):
 	if [ ! -d $@ ] ; then mkdir $@ ; fi
 
-$(_TMPDIR)/%.o: %.c
+create_d = @$(COMPILE.c) -MM $< | sed "s^$*.o^/$*.o^" > $*.d &&\
+	mv -f $*.d $*.d.tmp &&\
+	sed -e 's|.*:|$*.o:|' < $*.d.tmp > $*.d &&\
+	sed -e 's/.*://' -e 's/\\$$//' < $*.d.tmp | fmt -1 | sed -e 's/^ *//' -e 's/$$/:/' >> $*.d &&\
+	rm -f $*.d.tmp
+
+%.o: %.c
 	$(COMPILE.c) $(OUTPUT_OPTION) $<
-	$(COMPILE.c) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $(_TMPDIR)/$*.d
+	$(create_d)
 
-$(_TMPDIR)/%.o: %.cc
+%.o: %.cc
 	$(COMPILE.cc) $(OUTPUT_OPTION) $<
-	$(COMPILE.cc) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $(_TMPDIR)/$*.d
+	$(create_d)
 
-$(_TMPDIR)/%.o: %.cpp
+%.o: %.cpp
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
-	$(COMPILE.cpp) -MM $< | sed "s^$*.o^$(_TMPDIR)/$*.o^" > $(_TMPDIR)/$*.d
+	$(create_d)
 
 _NODEPS=clean depend temp $(_TMPDIR)
 ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(_NODEPS))))
