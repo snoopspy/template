@@ -2,10 +2,8 @@
 
 _TMPDIR = .tmp
 _SRCS = $(wildcard *.c) $(wildcard *.cc) $(wildcard *.cpp)
-_OBJS = $(addprefix ,$(addsuffix .o,$(basename $(_SRCS))))
-#_OBJS = $(addsuffix .o, $(basename $(_SRCS)))
+_OBJS = $(addprefix $(_TMPDIR)/,$(addsuffix .o,$(basename $(_SRCS))))
 _DEPS = $(_OBJS:%.o=%.d)
-#_DEPS = $(addsuffix .d, $(_SRCS))
 _EXEC = $(shell basename $(PWD))
 
 CPPFLAGS += -Wall -g
@@ -43,23 +41,17 @@ $(_EXEC): $(_OBJS) $(MAKEFILE_LIST)
 $(_TMPDIR):
 	if [ ! -d $@ ] ; then mkdir $@ ; fi
 
-create_d = @$(COMPILE.c) -MM $< | sed "s^$*.o^/$*.o^" > $*.d &&\
-	mv -f $*.d $*.d.tmp &&\
-	sed -e 's|.*:|$*.o:|' < $*.d.tmp > $*.d &&\
-	sed -e 's/.*://' -e 's/\\$$//' < $*.d.tmp | fmt -1 | sed -e 's/^ *//' -e 's/$$/:/' >> $*.d &&\
-	rm -f $*.d.tmp
-
-%.o: %.c
+$(_TMPDIR)/%.o: %.c
 	$(COMPILE.c) $(OUTPUT_OPTION) $<
-	$(create_d)
+	@$(COMPILE.c) -MM $< -MT $@ -MP -MF $(@:%.o=%.d)
 
-%.o: %.cc
+$(_TMPDIR)/%.o: %.cc
 	$(COMPILE.cc) $(OUTPUT_OPTION) $<
-	$(create_d)
+	@$(COMPILE.c) -MM $< -MT $@ -MP -MF $(@:%.o=%.d)
 
-%.o: %.cpp
+$(_TMPDIR)/%.o: %.cpp
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
-	$(create_d)
+	@$(COMPILE.c) -MM $< -MT $@ -MP -MF $(@:%.o=%.d)
 
 _NODEPS=clean depend temp $(_TMPDIR)
 ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(_NODEPS))))
